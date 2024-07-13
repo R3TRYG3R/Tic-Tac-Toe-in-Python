@@ -304,45 +304,57 @@ def check_winner():
         if first_row == side_user1+side_user1+side_user1 or first_row == side_user2+side_user2+side_user2:
             print(f"\nGame Ended!")
             game_logic = False
+            play_again()
         if second_row == side_user1+side_user1+side_user1 or second_row == side_user2+side_user2+side_user2:
             print(f"\nGame Ended!")
             game_logic = False
+            play_again()
         if third_row == side_user1+side_user1+side_user1 or third_row == side_user2+side_user2+side_user2:
             print(f"\nGame Ended!")
             game_logic = False
+            play_again()
         if first_row[0] == side_user1 and second_row[0] == side_user1 and third_row[0] == side_user1 or first_row[0] == side_user2 and second_row[0] == side_user2 and third_row[0] == side_user2:
             print(f"\nGame Ended!")
             game_logic = False
+            play_again()
         if first_row[1] == side_user1 and second_row[1] == side_user1 and third_row[1] == side_user1 or first_row[1] == side_user2 and second_row[1] == side_user2 and third_row[1] == side_user2:
             print(f"\nGame Ended!")
             game_logic = False
+            play_again()
         if first_row[2] == side_user1 and second_row[2] == side_user1 and third_row[2] == side_user1 or first_row[2] == side_user2 and second_row[2] == side_user2 and third_row[2] == side_user2:
             print(f"\nGame Ended!")
             game_logic = False
+            play_again()
         if first_row[0] == side_user1 and second_row[1] == side_user1 and third_row[2] == side_user1 or first_row[0] == side_user2 and second_row[1] == side_user2 and third_row[2] == side_user2:
             print(f"\nGame Ended!")
             game_logic = False
+            play_again()
         if first_row[2] == side_user1 and second_row[1] == side_user1 and third_row[0] == side_user1 or first_row[2] == side_user2 and second_row[1] == side_user2 and third_row[0] == side_user2:
             print(f"\nGame Ended!")
             game_logic = False
+            play_again()
     else:
         print("Draw!")
         game_logic = False
-        while True:
-            continue_the_game = input("\nDo u want to play again?: YES | NO  ").strip().lower()
-            if continue_the_game == "yes":
-                print("\nGood luck!")
-                clear_field()
-                game_logic = True
-                start_game()
-                break
-            elif continue_the_game == "no":
-                print("\nGood luck!")
-                game_logic = False
-                break
-            else:
-                print("Enter correct value!")
-                continue
+        play_again()
+
+def play_again():
+    global game_logic
+    while True:
+        continue_the_game = input("\nDo u want to play again?: YES | NO  ").strip().lower()
+        if continue_the_game == "yes":
+            print("\nGood luck!")
+            clear_field()
+            game_logic = True
+            start_game()
+            break
+        elif continue_the_game == "no":
+            print("\nGood luck!")
+            game_logic = False
+            break
+        else:
+            print("Enter correct value!")
+            continue
 
 names()
 choosing_sides()

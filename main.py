@@ -1,362 +1,100 @@
 #Code written by Aki
 
-
 field = [["###"],
          ["###"],
          ["###"]]
 
-first_row = field[0][0]
-second_row = field[1][0]
-third_row = field[2][0]
-updated_row_list = []
+def get_row_field():
+    return "".join(field[0]), "".join(field[1]), "".join(field[2])
 
-user1 = [] # name, side
-user2 = [] # name, side
-game_logic = True
 
-def names():
-    logic_True = True
-    while logic_True:
-        name1 = input("player1 enter your name: ").strip()
-        if name1 == "":
-            print("Enter correct value!")
-            continue
-        else:
-            while True:
-                name2 = input("player2 enter your name: ").strip()
-                if name2 == "":
-                    print("Enter correct value!")
-                    continue
-                else:
-                    print(f"Good luck {name1} and {name2}!")
-                    user1.append(name1), user2.append(name2)
-                    logic_True = False
-                    break
-
-def choosing_sides():
-    while True:
-        side_user1 = input(f"\n{user1[0]} choose ur side(X | O): ").strip().lower()
-        if side_user1 == "x":
-            print(f"Good choice! {user2[0]} will play with O")
-            user1.append(side_user1)
-            user2.append("o")
-            break
-        elif side_user1 == "o":
-            print(f"Good choice! {user2[0]} will play with X")
-            user1.append(side_user1)
-            user2.append("x")
-            break
-        else:
-            print("Enter correct value!")
-            continue
-
-def show_details():
-    global game_logic
-    print(f"\nLet's go through the details, it means:\n"
-          "------------------------------------------\n"
-          f"{user1[0]} will play with - {user1[1]}\n"
-          f"{user2[0]} will play with - {user2[1]}\n"
-          "------------------------------------------\n")
-    while True:
-        start_game = input("Want to start the game? YES|NO\n").strip().lower()
-        if start_game == "yes":
-            print("Okay, Lets go!")
-            game_logic = True
-            break
-        elif start_game == "no":
-            print("Okay, Bye!")
-            game_logic = False
-            break
-
-def show_field():
+def display_field():
+    first_row, second_row, third_row = get_row_field()
     print("\n------------------------------")
-    print(f"""\n\t\t\t{first_row}
-\t\t\t{second_row}
-\t\t\t{third_row}""")
+    print(f"\n\t\t\t{first_row}\n\t\t\t{second_row}\n\t\t\t{third_row}")
     print("\n------------------------------")
+
 
 def clear_field():
-    global first_row,second_row,third_row
-    first_row = "###"
-    second_row = "###"
-    third_row = "###"
+    global field
+    field = [["###"], ["###"], ["###"]]
 
-def start_game():
-    global user1_choice_X, user1_choice_Y, user2_choice_X, user2_choice_Y, user1_first_choice, user1_second_choice, user2_first_choice, user2_second_choice
-    while game_logic:
-        user1_first_choice = True
-        while user1_first_choice:
-            try:
-                user1_choice_X = int(input(f"\n{user1[0]} enter the coordinates(X) where you want to place {user1[1]} :").strip())
-            except ValueError:
-                print("Enter correct variable!")
-                continue
-            if user1_choice_X == 1 or user1_choice_X == 2 or user1_choice_X == 3:
-                user1_first_choice = False
-            else:
-                print("Enter correct value!")
-                continue
-        user1_second_choice = True
-        while user1_second_choice:
-            try:
-                user1_choice_Y = int(input(f"{user1[0]} enter the coordinates(Y) where you want to place {user1[1]} :").strip())
-            except ValueError:
-                print("Enter correct variable!")
-                continue
-            if user1_choice_Y == 1 or user1_choice_Y == 2 or user1_choice_Y == 3:
-                user1_second_choice = False
-                user1_coordinates(user1_choice_X, user1_choice_Y)
-            else:
-                print("Enter correct value!")
-                continue
-        user2_first_choice = True
-        while user2_first_choice and game_logic == True:
-            try:
-                user2_choice_X = int(input(f"\n{user2[0]} enter the coordinates(X) where you want to place {user2[1]} :").strip())
-            except ValueError:
-                print("Enter correct variable!")
-                continue
-            if user2_choice_X == 1 or user2_choice_X == 2 or user2_choice_X == 3:
-                user2_first_choice = False
-            else:
-                print("Enter correct value!")
-                continue
-        user2_second_choice = True
-        while user2_second_choice and game_logic == True:
-            try:
-                user2_choice_Y = int(input(f"{user2[0]} enter the coordinates(Y) where you want to place {user2[1]} :").strip())
-            except ValueError:
-                print("Enter correct variable!")
-                continue
-            if user2_choice_Y == 1 or user2_choice_Y == 2 or user2_choice_Y == 3:
-                user2_second_choice = False
-                user2_coordinates(user2_choice_X, user2_choice_Y)
-            else:
-                print("Enter correct value!")
-                continue
 
-def user1_coordinates(x, y):
-    global first_row, second_row, third_row, updated_row_list
-    x -= 1
-    y -= 1
-    if 0 <= x <= 2 and y == 0:
-        counter = 0
-        for symbol in first_row:
-            if x == counter:
-                if symbol == "#":
-                    updated_row_list.append(f"{user1[1]}")
-                elif symbol == f"{user2[1]}":
-                    print(f"\nU can't change {user2[0]} symbol!")
-                    print("You will miss this turn! Do not do that :)")
-                    updated_row_list.append(f"{user2[1]}")
-                elif symbol == user1[1]:
-                    print("\nThere is already such a symbol in this place!"
-                          "\nP.S be more careful next time ;)")
-                    updated_row_list.append(f"{user1[1]}")
-            elif symbol == "o":
-                updated_row_list.append("o")
-            elif symbol == "x":
-                updated_row_list.append("x")
+def input_valid_coordinate(prompt):
+    while True:
+        try:
+            coordinate = int(input(prompt).strip())
+            if 1 <= coordinate <= 3:
+                return coordinate
             else:
-                updated_row_list.append("#")
-            counter += 1
-        first_row = "".join(updated_row_list)
-        updated_row_list = []
-        show_field()
-        check_winner()
-    if 0 <= x <= 2 and y == 1:
-        counter = 0
-        for symbol in second_row:
-            if x == counter:
-                if symbol == "#":
-                    updated_row_list.append(f"{user1[1]}")
-                elif symbol == f"{user2[1]}":
-                    print(f"\nU can't change {user2[0]} symbol!")
-                    print("You will miss this turn! Do not do that :)")
-                    updated_row_list.append(f"{user2[1]}")
-                elif symbol == user1[1]:
-                    print("\nThere is already such a symbol in this place!"
-                          "\nP.S be more careful next time ;)")
-                    updated_row_list.append(f"{user1[1]}")
-            elif symbol == "o":
-                updated_row_list.append("o")
-            elif symbol == "x":
-                updated_row_list.append("x")
-            else:
-                updated_row_list.append("#")
-            counter += 1
-        second_row = "".join(updated_row_list)
-        updated_row_list = []
-        show_field()
-        check_winner()
-    if 0 <= x <= 2 and y == 2:
-        counter = 0
-        for symbol in third_row:
-            if x == counter:
-                if symbol == "#":
-                    updated_row_list.append(f"{user1[1]}")
-                elif symbol == f"{user2[1]}":
-                    print(f"\nU can't change {user2[0]} symbol!")
-                    print("You will miss this turn! Do not do that :)")
-                    updated_row_list.append(f"{user2[1]}")
-                elif symbol == user1[1]:
-                    print("\nThere is already such a symbol in this place!"
-                          "\nP.S be more careful next time ;)")
-                    updated_row_list.append(f"{user1[1]}")
-            elif symbol == "o":
-                updated_row_list.append("o")
-            elif symbol == "x":
-                updated_row_list.append("x")
-            else:
-                updated_row_list.append("#")
-            counter += 1
-        third_row = "".join(updated_row_list)
-        updated_row_list = []
-        show_field()
-        check_winner()
+                print("Введите значение от 1 до 3.")
+        except ValueError:
+            print("Введите правильное числовое значение.")
 
-def user2_coordinates(x, y):
-    global first_row, second_row, third_row, updated_row_list
-    x -= 1
-    y -= 1
-    if 0 <= x <= 2 and y == 0:
-        counter = 0
-        for symbol in first_row:
-            if x == counter:
-                if symbol == "#":
-                    updated_row_list.append(f"{user2[1]}")
-                elif symbol == f"{user1[1]}":
-                    print(f"\nU can't change {user1[0]} symbol!")
-                    print("You will miss this turn! Do not do that :)")
-                    updated_row_list.append(f"{user1[1]}")
-                elif symbol == user2[1]:
-                    print("\nThere is already such a symbol in this place!"
-                          "\nP.S be more careful next time ;)")
-                    updated_row_list.append(f"{user2[1]}")
-            elif symbol == "x":
-                updated_row_list.append("x")
-            elif symbol == "o":
-                updated_row_list.append("o")
-            else:
-                updated_row_list.append("#")
-            counter += 1
-        first_row = "".join(updated_row_list)
-        updated_row_list = []
-        show_field()
-        check_winner()
-    if 0 <= x <= 2 and y == 1:
-        counter = 0
-        for symbol in second_row:
-            if x == counter:
-                if symbol == "#":
-                    updated_row_list.append(f"{user2[1]}")
-                elif symbol == f"{user1[1]}":
-                    print(f"\nU can't change {user1[0]} symbol!")
-                    print("You will miss this turn! Do not do that :)")
-                    updated_row_list.append(f"{user1[1]}")
-                elif symbol == user2[1]:
-                    print("\nThere is already such a symbol in this place!"
-                          "\nP.S be more careful next time ;)")
-                    updated_row_list.append(f"{user2[1]}")
-            elif symbol == "x":
-                updated_row_list.append("x")
-            elif symbol == "o":
-                updated_row_list.append("o")
-            else:
-                updated_row_list.append("#")
-            counter += 1
-        second_row = "".join(updated_row_list)
-        updated_row_list = []
-        show_field()
-        check_winner()
-    if 0 <= x <= 2 and y == 2:
-        counter = 0
-        for symbol in third_row:
-            if x == counter:
-                if symbol == "#":
-                    updated_row_list.append(f"{user2[1]}")
-                elif symbol == f"{user1[1]}":
-                    print(f"\nU can't change {user1[0]} symbol!")
-                    print("You will miss this turn! Do not do that :)")
-                    updated_row_list.append(f"{user1[1]}")
-                elif symbol == user2[1]:
-                    print("\nThere is already such a symbol in this place!"
-                          "\nP.S be more careful next time ;)")
-                    updated_row_list.append(f"{user2[1]}")
-            elif symbol == "x":
-                updated_row_list.append("x")
-            elif symbol == "o":
-                updated_row_list.append("o")
-            else:
-                updated_row_list.append("#")
-            counter += 1
-        third_row = "".join(updated_row_list)
-        updated_row_list = []
-        show_field()
-        check_winner()
+
+def player_turn(player, symbol):
+    x = input_valid_coordinate(f"\n{player} введите координаты (X) для {symbol}: ") - 1
+    y = input_valid_coordinate(f"{player} введите координаты (Y) для {symbol}: ") - 1
+    if field[y][0][x] == "#":
+        field[y][0] = field[y][0][:x] + symbol + field[y][0][x + 1:]
+        display_field()
+    else:
+        print("Место уже занято, пропуск хода.")
+
 
 def check_winner():
-    global game_logic,user1_first_choice,user1_second_choice, user2_first_choice, user2_second_choice
-    side_user1 = user1[1]
-    side_user2 = user2[1]
+    first_row, second_row, third_row = get_row_field()
+    rows = [first_row, second_row, third_row]
+    columns = ["".join([first_row[i], second_row[i], third_row[i]]) for i in range(3)]
+    diagonals = [first_row[0] + second_row[1] + third_row[2], first_row[2] + second_row[1] + third_row[0]]
+    lines = rows + columns + diagonals
+    for line in lines:
+        if line == "xxx" or line == "ooo":
+            return True
+    return not any("#" in row for row in rows)
 
-    if first_row.__contains__("#") or second_row.__contains__("#") or third_row.__contains__("#"):
-        if first_row == side_user1+side_user1+side_user1 or first_row == side_user2+side_user2+side_user2:
-            print(f"\nGame Ended!")
-            game_logic = False
-            play_again()
-        if second_row == side_user1+side_user1+side_user1 or second_row == side_user2+side_user2+side_user2:
-            print(f"\nGame Ended!")
-            game_logic = False
-            play_again()
-        if third_row == side_user1+side_user1+side_user1 or third_row == side_user2+side_user2+side_user2:
-            print(f"\nGame Ended!")
-            game_logic = False
-            play_again()
-        if first_row[0] == side_user1 and second_row[0] == side_user1 and third_row[0] == side_user1 or first_row[0] == side_user2 and second_row[0] == side_user2 and third_row[0] == side_user2:
-            print(f"\nGame Ended!")
-            game_logic = False
-            play_again()
-        if first_row[1] == side_user1 and second_row[1] == side_user1 and third_row[1] == side_user1 or first_row[1] == side_user2 and second_row[1] == side_user2 and third_row[1] == side_user2:
-            print(f"\nGame Ended!")
-            game_logic = False
-            play_again()
-        if first_row[2] == side_user1 and second_row[2] == side_user1 and third_row[2] == side_user1 or first_row[2] == side_user2 and second_row[2] == side_user2 and third_row[2] == side_user2:
-            print(f"\nGame Ended!")
-            game_logic = False
-            play_again()
-        if first_row[0] == side_user1 and second_row[1] == side_user1 and third_row[2] == side_user1 or first_row[0] == side_user2 and second_row[1] == side_user2 and third_row[2] == side_user2:
-            print(f"\nGame Ended!")
-            game_logic = False
-            play_again()
-        if first_row[2] == side_user1 and second_row[1] == side_user1 and third_row[0] == side_user1 or first_row[2] == side_user2 and second_row[1] == side_user2 and third_row[0] == side_user2:
-            print(f"\nGame Ended!")
-            game_logic = False
-            play_again()
-    else:
-        print("Draw!")
-        game_logic = False
-        play_again()
 
-def play_again():
-    global game_logic
+def start_game():
     while True:
-        continue_the_game = input("\nDo u want to play again?: YES | NO  ").strip().lower()
-        if continue_the_game == "yes":
-            print("\nGood luck!")
-            clear_field()
-            game_logic = True
-            start_game()
+        player1 = input("Игрок 1, введите ваше имя: ").strip()
+        player2 = input("Игрок 2, введите ваше имя: ").strip()
+        if player1 == "" or player2 == "":
+            print("Введите ваше имя!")
+            continue
+        else:
+            print(f"Удачи, {player1} и {player2}!")
             break
-        elif continue_the_game == "no":
-            print("\nGood luck!")
-            game_logic = False
+
+    while True:
+        side = input(f"{player1}, выберите сторону (X или O): ").strip().lower()
+        if side in ["x", "o"]:
+            side1, side2 = ("x", "o") if side == "x" else ("o", "x")
             break
         else:
-            print("Enter correct value!")
+            print("Введите правильное значение (X или O).")
+
+    print(f"{player1} играет за {side1}, {player2} играет за {side2}")
+    display_field()
+
+    current_player, current_side = player1, side1
+    while True:
+        player_turn(current_player, current_side)
+        if check_winner():
+            print(f"Игра окончена! Победитель: {current_player}")
+            break
+        current_player, current_side = (player2, side2) if current_player == player1 else (player1, side1)
+
+    while True:
+        choice = input("Хотите сыграть снова? (yes/no): ").strip().lower()
+        if choice == "yes":
+            clear_field()
+            start_game()
+            break
+        elif choice == "no":
+            print("\nGood luck! (👉ﾟヮﾟ)👉")
+            break
+        else:
+            print("Введите правильное значение!")
             continue
 
-names()
-choosing_sides()
-show_details()
 start_game()
